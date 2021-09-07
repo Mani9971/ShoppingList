@@ -19,6 +19,9 @@ namespace ShoppingList.Dal
         }
 
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCart { get; set; }
+
+        public virtual DbSet<ShoppingCartProducts> ShoppingCartProducts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,11 +41,19 @@ namespace ShoppingList.Dal
                 entity.ToTable("Product");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
-                entity.Property(e => e.AvailableCount);
+                entity.Property(e => e.IsChecked).IsRequired(true);
+                entity.Property(e => e.Price).IsRequired(true);
                 entity.Property(e => e.Description).HasMaxLength(50).IsRequired(false);
-                
+
+            });
+            modelBuilder.Entity<ShoppingCart>(entity => { 
+            entity.Property(e => e.ForDate).IsRequired(false);
+                entity.Property(e => e.Id);
             });
 
+            modelBuilder.Entity<ShoppingCart>().HasKey(e => e.Id);
+
+            modelBuilder.Entity<ShoppingCartProducts>().HasKey(e => new { e.ProductId, e.ShoppingListId });
             OnModelCreatingPartial(modelBuilder);
         }
 
