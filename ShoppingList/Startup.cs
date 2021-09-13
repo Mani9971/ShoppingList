@@ -1,9 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShoppingList.Core.Repositories;
+using ShoppingList.Core.Services;
+using ShoppingList.Dal;
+using ShoppingList.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +28,11 @@ namespace ShoppingList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ShoppingListDatabaseContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IProductRepository,ProductRepository>();
+            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddControllersWithViews();
         }
 
