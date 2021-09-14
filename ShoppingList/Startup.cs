@@ -32,6 +32,7 @@ namespace ShoppingList
             services.AddDbContext<ShoppingListDatabaseContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductRepository,ProductRepository>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddNotyf(config => { config.DurationInSeconds = 3; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
