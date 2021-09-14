@@ -3,12 +3,12 @@
 <div class="container" p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-primary">Category List</h2>
+            <h2 class="text-primary">Shopping lists</h2>
         </div>
         <div class="col-6 text-right">
             <a asp-controller="ShoppingCart" asp-action="Create" class="btn btn-primary">
                 Create New Shopping List
-            </a><!--asp-controller nije potrebno ni pisati jer pretpostavka da se radi on CategoryControlleru*-->
+            </a>
         </div>
     </div>
     <br /><br />
@@ -20,21 +20,32 @@
             <thead>
                 <tr>
                     <th>
-                        Shopping list ID
+                        Shopping list
                     </th>
                     <th>
-                        Date Created
+                        For date
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model)
+                @foreach (var list in Model)
                 {
-                    <tr>
-                        <td width="50%">@obj.Id</td>
-                        <td width="30%">@obj.ForDate</td>
-                    </tr>
+                <tr>
+                    <td width="50%">@list.Name</td>
+                    <td width="30%">@list.ForDate</td>
+                    <td class="text-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="ShoppingCart" asp-route-Id="@list.Id" asp-action="Edit" class="btn btn-primary mx-2">
+                                Edit
+                            </a>
+                            @using (Html.BeginForm("DeletePost", "ShoppingCart", new { Id = list.Id }, FormMethod.Post))
+                            {
+                                <button class="btn btn-danger">Delete</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

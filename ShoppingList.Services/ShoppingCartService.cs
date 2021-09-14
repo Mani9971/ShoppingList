@@ -18,25 +18,33 @@ namespace ShoppingList.Services
         }
         public async Task<bool> Add(ShoppingCart entity)
         {
-            if(entity.ForDate.HasValue && entity.ForDate.Value>= DateTime.Now.Date)
+            if (entity.ForDate.HasValue && entity.ForDate.Value >= DateTime.Now.Date)
             {
                 using (_db)
                 {
-                   var a = await _db.ShoppingCart.Add(entity);
+                    var a = await _db.ShoppingCart.Add(entity);
                     if (a > 0) return true;
                 }
             }
             return false;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            using (_db)
+            {
+                var a = await _db.ShoppingCart.Delete(id);
+                if (a > 0) return true;
+            };
+            return false;
         }
 
-        public Task<ShoppingCart> Get(int id)
+        public async Task<ShoppingCart> Get(int id)
         {
-            throw new NotImplementedException();
+            using (_db)
+            {
+                return await _db.ShoppingCart.Get(id);
+            };
         }
 
         public async Task<IEnumerable<ShoppingCart>> GetAll()
@@ -55,9 +63,17 @@ namespace ShoppingList.Services
             }
         }
 
-        public Task<bool> Update(ShoppingCart entity)
+        public async Task<bool> Update(ShoppingCart entity)
         {
-            throw new NotImplementedException();
+            if (entity.ForDate.HasValue && entity.ForDate.Value >= DateTime.Now.Date)
+            {
+                using (_db)
+                {
+                    var a = await _db.ShoppingCart.Update(entity);
+                    if (a > 0) return true;
+                };
+            }
+            return false;
         }
     }
 }

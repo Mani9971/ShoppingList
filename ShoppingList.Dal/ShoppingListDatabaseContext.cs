@@ -9,14 +9,10 @@ namespace ShoppingList.Dal
 {
     public partial class ShoppingListDatabaseContext : DbContext
     {
-        public ShoppingListDatabaseContext()
-        {
-        }
+        public ShoppingListDatabaseContext(){}
 
         public ShoppingListDatabaseContext(DbContextOptions<ShoppingListDatabaseContext> options)
-            : base(options)
-        {
-        }
+            : base(options){}
 
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ShoppingCart> ShoppingCart { get; set; }
@@ -36,9 +32,11 @@ namespace ShoppingList.Dal
                 entity.Property(e => e.Description).HasMaxLength(50).IsRequired(false);
 
             });
-            modelBuilder.Entity<ShoppingCart>(entity => { 
-            entity.Property(e => e.ForDate).IsRequired(false);
+            modelBuilder.Entity<ShoppingCart>(entity => {
+                entity.Property(e => e.Name).IsRequired(true).HasMaxLength(15);
+                entity.Property(e => e.ForDate).IsRequired(false);
                 entity.Property(e => e.Id);
+                
             });
 
             modelBuilder.Entity<ShoppingCart>().HasKey(e => e.Id);
