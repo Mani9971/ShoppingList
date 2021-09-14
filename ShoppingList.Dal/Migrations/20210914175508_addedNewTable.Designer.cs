@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppingList.Dal;
 
 namespace ShoppingList.Dal.Migrations
 {
     [DbContext(typeof(ShoppingListDatabaseContext))]
-    partial class ShoppingListDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210914175508_addedNewTable")]
+    partial class addedNewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

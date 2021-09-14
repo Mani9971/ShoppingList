@@ -16,6 +16,6 @@ namespace ShoppingList.Core.Models
         public bool IsChecked { get; set; }
         [RegularExpression("^[1-9][\\.\\d]*(,\\d+)?$", ErrorMessage = "Price must be a number.")]
         public decimal Price { get; set; }
-        public IList<ShoppingCartProducts> ShoppingListProducts { get; set; }
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
     }
 }

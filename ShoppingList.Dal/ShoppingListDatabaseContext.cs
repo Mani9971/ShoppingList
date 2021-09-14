@@ -16,8 +16,6 @@ namespace ShoppingList.Dal
 
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ShoppingCart> ShoppingCart { get; set; }
-
-        public virtual DbSet<ShoppingCartProducts> ShoppingCartProducts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Croatian_CI_AS");
@@ -40,8 +38,8 @@ namespace ShoppingList.Dal
             });
 
             modelBuilder.Entity<ShoppingCart>().HasKey(e => e.Id);
-
-            modelBuilder.Entity<ShoppingCartProducts>().HasKey(e => new { e.ProductId, e.ShoppingListId });
+            modelBuilder.Entity<ShoppingCart>().HasMany(e => e.Products).WithMany(e => e.ShoppingCarts)
+                .UsingEntity(e => e.ToTable("ShoppingCartProducts"));
             OnModelCreatingPartial(modelBuilder);
         }
 

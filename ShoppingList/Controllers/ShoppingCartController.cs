@@ -24,7 +24,7 @@ namespace ShoppingList.Controllers
         }
         public async Task<IActionResult> IndexAsync()
         {
-            //var randomVarijabla = await _svc.GetShoppingCartWithProducts(1);
+            //var randomVarijabla = await _svc.GetShoppingCartWithProducts(26);
             return View(await _svc.GetAll());
         }
 

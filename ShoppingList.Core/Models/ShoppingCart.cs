@@ -14,6 +14,6 @@ namespace ShoppingList.Core.Models
         public string Name { get; set; }
         public int Id { get; set; }
         public DateTime? ForDate { get; set; }
-        public IList<ShoppingCartProducts> ShoppingListProducts { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

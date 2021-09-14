@@ -49,8 +49,8 @@ namespace ShoppingList.Dal
 
         public async Task<ShoppingCart> GetShoppingCartWithProducts(int id)
         {
-            var shoppingCart = await _context.ShoppingCart.Where(x => x.Id == id).Include(x => x.ShoppingListProducts).ThenInclude(x => x.Product).FirstOrDefaultAsync();
-            if(shoppingCart != null)
+            var shoppingCart = await _context.ShoppingCart.Where(x => x.Id == id).Include(x => x.Products).FirstOrDefaultAsync();
+            if (shoppingCart != null)
             {
                 return shoppingCart;
             }
