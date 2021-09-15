@@ -22,19 +22,13 @@ namespace ShoppingList.Controllers
         }
         public async Task<IActionResult> IndexAsync()
         {
-            return View(await _svc.GetAll());
-        }
-
-        //GET - Create
-        public IActionResult CreateAsync()
-        {
+            var products = await _svc.GetAll();
+            ViewBag.Products = products;
             return View();
         }
-
-        //POST - Create
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CreateAsync(Product product)
+        public async Task<IActionResult> IndexPostAsync(Product product)
         {
             if (ModelState.IsValid)//validate data with annotations
             {
@@ -45,11 +39,13 @@ namespace ShoppingList.Controllers
                 }
                 else
                 {
-                    _notyf.Warning("Please select a valid date.");
-                    return View(product);
+                    _notyf.Warning("Invalid information entered.");
+                    return RedirectToAction("Index");
+
                 }
             }
-            return View(product);
+            _notyf.Warning("Invalid information entered.");
+            return RedirectToAction("Index");
         }
 
         //GET - Edit
