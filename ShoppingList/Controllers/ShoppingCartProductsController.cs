@@ -45,10 +45,10 @@ namespace ShoppingList.Controllers
         {
             if (ModelState.IsValid)
             {
-                var updated = await _svc.AddProductToShoppingCart(product, (int)_session.GetInt32("_Id"));
-                if (updated != null)
+                var added = await _svc.AddProductToShoppingCart(product, (int)_session.GetInt32("_Id"));
+                if (added != null)
                 {
-                    _notyf.Warning("Product Added.");
+                    _notyf.Success("Product Added.");
                     return RedirectToAction("Index");
                 }
             }
