@@ -10,5 +10,6 @@ namespace ShoppingList.Core.Repositories
     public interface IShoppingCartRepository : IRepository <ShoppingCart>
     {
         public Task<ShoppingCart> GetShoppingCartWithProducts(int id);
+        Task<ShoppingCart> AddProductToShoppingCart(Product product, int id);
     }
 }

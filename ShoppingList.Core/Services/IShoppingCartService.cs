@@ -15,5 +15,6 @@ namespace ShoppingList.Core.Services
         Task<bool> Delete(int id);
         Task<bool> Update(ShoppingCart entity);
         Task<ShoppingCart> GetShoppingCartWithProducts(int id);
+        Task<ShoppingCart> AddProductToShoppingCart(Product product, int id);
     }
 }

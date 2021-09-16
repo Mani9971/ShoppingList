@@ -1,111 +1,60 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingList.Core.Models;
 using ShoppingList.Core.Services;
+using ShoppingList.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics.Eventing.Reader;
+using Microsoft.AspNetCore.Http;
 
 namespace ShoppingList.Controllers
 {
     public class ShoppingCartProductsController : Controller
     {
         private readonly IShoppingCartService _svc;
+        private readonly IProductService _psvc;
         private readonly INotyfService _notyf;
+        private ISession _session;
 
-        public ShoppingCartProductsController(IShoppingCartService svc, INotyfService notyf)
+        public ShoppingCartProductsController(IShoppingCartService svc, INotyfService notyf, IProductService psvc, IHttpContextAccessor httpContextAccessors)
         {
             _svc = svc;
+            _psvc = psvc;
             _notyf = notyf;
+            _session = httpContextAccessors.HttpContext.Session;
 
         }
 
         public async Task<IActionResult> IndexAsync(int? id)
         {
-            if(id != null) {
-                var shoppingCart = await _svc.GetShoppingCartWithProducts((int)id);
-                ViewBag.ShoppingCartWithProducts = shoppingCart;
-                return View();
+            if(id != 0 && id != null)
+            {
+                _session.SetInt32("_Id", (int)id);
+                int storedId = (int)_session.GetInt32("_Id");
+                ShoppingCartProducts shoppingCart = new();
+                shoppingCart.ShoppingCart = await _svc.GetShoppingCartWithProducts(storedId);
+                return View(shoppingCart);
             }
-            return View();
+            return RedirectToAction("Index", new { id = (int)_session.GetInt32("_Id")});
         }
+
+
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> IndexPostAsync(Product product)
         {
-            //if (ModelState.IsValid)//validate data with annotations
-            //{
-            //    var added = await _svc.Kako sad omoguciti dodavanje u pomocnu tablicu??
-            //        if (added)
-            //    {
-            //        return RedirectToAction("Index");
-            //    }
-            //    else
-            //    {
-            //        _notyf.Warning("Invalid information entered.");
-            //        return RedirectToAction("Index");
-
-            //    }
-            //}
-            //_notyf.Warning("Invalid information entered.");
-            //return RedirectToAction("Index");
-            return null;//added extra-delete later
-        }
-        //GET - Edit
-        public async Task<IActionResult> EditAsync(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                _notyf.Error("List not found.");
-                return View();
-            }
-            var shoppingCart = await _svc.Get((int)(id!));
-            if (shoppingCart != null)
-            {
-                return View(shoppingCart);
-            }
-            return View();
-        }
-
-        //POST-Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAsync(ShoppingCart shoppingCart)
-        {
             if (ModelState.IsValid)
             {
-                var updated = await _svc.Update(shoppingCart);
-                if (updated)
+                var updated = await _svc.AddProductToShoppingCart(product, (int)_session.GetInt32("_Id"));
+                if (updated != null)
                 {
-                    _notyf.Success("List updated.");
+                    _notyf.Warning("Product Added.");
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    _notyf.Warning("Please select a valid date.");
-                    return View(shoppingCart);
-                }
             }
-            return View(shoppingCart);
+            _notyf.Warning("Invalid information entered.");
+            return RedirectToAction("Index");
         }
 
-        //POST-Delete
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePostAsync(int? id)
-        {
-            var deleted = await _svc.Delete((int)(id));
-            if (deleted)
-            {
-                _notyf.Success("List deleted.");
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                _notyf.Warning("List not found.");
-                return RedirectToAction("Index");
-            }
-        }
     }
 }

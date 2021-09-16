@@ -30,7 +30,7 @@
             <tbody>
                 @foreach (var list in ViewBag.ShoppingCart)
                 {
-                    <tr class="clickable "onclick="window.location='@Url.Action("Index", "ShoppingCartProducts", new { id = list.Id })'">
+                    <tr>
                         <td width="50%">@list.Name</td>
                         <td width="30%">@list.ForDate</td>
                         <td class="text-center">
@@ -38,10 +38,12 @@
                                 <a asp-controller="ShoppingCart" asp-route-Id="@list.Id" asp-action="Edit" class="btn btn-primary mx-2">
                                     Edit
                                 </a>
+                                <a asp-controller="ShoppingCartProducts" asp-route-Id="@list.Id" asp-action="Index" class="btn btn-primary mx-2">
+                                    Go
+                                </a>
                                 @using (Html.BeginForm("DeletePost", "ShoppingCart", new { Id = list.Id }, FormMethod.Post))
                                 {
-                                    <button class="btn btn-danger">Delete</button>
-                                }
+                            <button class="btn btn-danger">Delete</button>}
                             </div>
                         </td>
                     </tr>

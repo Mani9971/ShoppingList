@@ -29,6 +29,15 @@ namespace ShoppingList.Services
             return false;
         }
 
+        public async Task<ShoppingCart> AddProductToShoppingCart(Product product, int id)
+        {
+            using (_db)
+            {
+                var shoppingCart = await _db.ShoppingCart.AddProductToShoppingCart(product, id);
+                return shoppingCart;
+            };
+        }
+
         public async Task<bool> Delete(int id)
         {
             using (_db)

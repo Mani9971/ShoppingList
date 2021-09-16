@@ -67,5 +67,29 @@ namespace ShoppingList.Dal
             }
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<ShoppingCart> AddProductToShoppingCart(Product product, int id) 
+        { 
+            var shoppingCartTask = _context.ShoppingCart.Where(x => x.Id == id).Include(x=>x.Products).FirstOrDefaultAsync();
+            var foundShoppingCart = shoppingCartTask.Result;
+            var foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == x.Price).FirstOrDefaultAsync();
+            if (foundShoppingCartProduct == null)
+            {
+                _context.Products.Add(product);
+                _context.SaveChanges();
+                foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == x.Price).FirstOrDefaultAsync();
+            }
+
+            if (foundShoppingCartProduct != null)
+            {
+                if (foundShoppingCart.Products.Where(x => x.Id == foundShoppingCartProduct.Id).FirstOrDefault() == null)
+                {
+                    foundShoppingCart.Products.Add(foundShoppingCartProduct);
+                }
+            }
+            _context.SaveChanges();
+
+            return foundShoppingCart;
+        }
     }
 }
