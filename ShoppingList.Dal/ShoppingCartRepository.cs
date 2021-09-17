@@ -73,12 +73,12 @@ namespace ShoppingList.Dal
         { 
             var shoppingCartTask = _context.ShoppingCart.Where(x => x.Id == id).Include(x=>x.Products).FirstOrDefaultAsync();
             var foundShoppingCart = shoppingCartTask.Result;
-            var foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == x.Price).FirstOrDefaultAsync();
+            var foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == product.Price).FirstOrDefaultAsync();
             if (foundShoppingCartProduct == null)
             {
                 _context.Products.Add(product);
                 _context.SaveChanges();
-                foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == x.Price).FirstOrDefaultAsync();
+                foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == product.Price).FirstOrDefaultAsync();
             }
 
             if (foundShoppingCartProduct != null)
