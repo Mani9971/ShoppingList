@@ -21,7 +21,7 @@ namespace ShoppingList.Dal
         public async Task<int> Add(ShoppingCart entity)
         {
             await _context.ShoppingCart.AddAsync(entity);
-            var save = await _context.SaveChangesAsync();//Vraca broj redova koji su rowsAffected
+            var save = await _context.SaveChangesAsync();
             return save;
         }
 
@@ -31,12 +31,11 @@ namespace ShoppingList.Dal
             if (foundObject != null)
             {
                 _context.ShoppingCart.Remove(foundObject);
-                var save = await _context.SaveChangesAsync();//Vraca broj redova koji su rowsAffected
+                var save = await _context.SaveChangesAsync();
                 return save;
             }
-            return 0;//metoda Delete vraca broj obrisanih redova
+            return 0;
         }
-        //Klasa koja izvrši radnju i spremi rezultat 
 
         public async Task<ShoppingCart> Get(int id)
         {
@@ -62,16 +61,16 @@ namespace ShoppingList.Dal
         public async Task<int> Update(ShoppingCart entity)
         {
             var foundObject = await _context.ShoppingCart.Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
-            if(foundObject != null)
+            if (foundObject != null)
             {
                 _context.Entry(foundObject).CurrentValues.SetValues(entity);
             }
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<ShoppingCart> AddProductToShoppingCart(Product product, int id) 
-        { 
-            var shoppingCartTask = _context.ShoppingCart.Where(x => x.Id == id).Include(x=>x.Products).FirstOrDefaultAsync();
+        public async Task<ShoppingCart> AddProductToShoppingCart(Product product, int id)
+        {
+            var shoppingCartTask = _context.ShoppingCart.Where(x => x.Id == id).Include(x => x.Products).FirstOrDefaultAsync();
             var foundShoppingCart = shoppingCartTask.Result;
             var foundShoppingCartProduct = await _context.Products.Where(x => x.Name == product.Name && x.Price == product.Price).FirstOrDefaultAsync();
             if (foundShoppingCartProduct == null)
@@ -119,7 +118,7 @@ namespace ShoppingList.Dal
                 foundShoppingCartProduct.IsChecked = !foundShoppingCartProduct.IsChecked;
 
                 _context.ShoppingCart.Update(foundShoppingCart);
- 
+
             }
             return await _context.SaveChangesAsync();
         }

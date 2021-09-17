@@ -86,7 +86,7 @@ namespace ShoppingList.Services
         {
             using (_db)
             {
-                var a =  await _db.ShoppingCart.RemoveProductFromShoppingCart(listId, productId);
+                var a = await _db.ShoppingCart.RemoveProductFromShoppingCart(listId, productId);
                 if (a > 0) return true;
             };
             return false;

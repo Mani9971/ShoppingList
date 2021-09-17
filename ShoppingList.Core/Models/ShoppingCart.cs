@@ -10,7 +10,7 @@ namespace ShoppingList.Core.Models
 {
     public class ShoppingCart
     {
-        [MinLength(1), MaxLength(15),Required(AllowEmptyStrings = false)]
+        [MinLength(1), MaxLength(15), Required(AllowEmptyStrings = false)]
         public string Name { get; set; }
         public int Id { get; set; }
         public DateTime? ForDate { get; set; }

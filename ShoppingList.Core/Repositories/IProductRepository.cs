@@ -7,7 +7,5 @@ using System.Threading.Tasks;
 
 namespace ShoppingList.Core.Repositories
 {
-    public interface IProductRepository : IRepository<Product>
-    {
-    }
+    public interface IProductRepository : IRepository<Product>{}
 }

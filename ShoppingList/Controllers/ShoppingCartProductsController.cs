@@ -27,7 +27,7 @@ namespace ShoppingList.Controllers
 
         public async Task<IActionResult> IndexAsync(int? id)
         {
-            if(id != 0 && id != null)
+            if (id != 0 && id != null)
             {
                 _session.SetInt32("_Id", (int)id);
                 int storedId = (int)_session.GetInt32("_Id");
@@ -35,9 +35,8 @@ namespace ShoppingList.Controllers
                 shoppingCart.ShoppingCart = await _svc.GetShoppingCartWithProducts(storedId);
                 return View(shoppingCart);
             }
-            return RedirectToAction("Index", new { id = (int)_session.GetInt32("_Id")});
+            return RedirectToAction("Index", new { id = (int)_session.GetInt32("_Id") });
         }
-
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
@@ -79,9 +78,9 @@ namespace ShoppingList.Controllers
         {
             if (productId != 0)
             {
-                var checkedUnchecked =await _svc.CheckUncheckItem((int)_session.GetInt32("_Id"), productId);
-                    if (checkedUnchecked)
-                    {
+                var checkedUnchecked = await _svc.CheckUncheckItem((int)_session.GetInt32("_Id"), productId);
+                if (checkedUnchecked)
+                {
                     return RedirectToAction("Index");
                 }
             }

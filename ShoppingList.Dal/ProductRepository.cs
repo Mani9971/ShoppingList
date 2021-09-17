@@ -20,7 +20,7 @@ namespace ShoppingList.Dal
         public async Task<int> Add(Product entity)
         {
             await _context.Products.AddAsync(entity);
-            var save = await _context.SaveChangesAsync();//Vraca broj redova koji su rowsAffected
+            var save = await _context.SaveChangesAsync();
             return save;
         }
 
@@ -30,12 +30,11 @@ namespace ShoppingList.Dal
             if (foundObject != null)
             {
                 _context.Products.Remove(foundObject);
-                var save = await _context.SaveChangesAsync();//Vraca broj redova koji su rowsAffected
+                var save = await _context.SaveChangesAsync();
                 return save;
             }
-            return 0;//metoda Delete vraca broj obrisanih redova
+            return 0;
         }
-        //Klasa koja izvrši radnju i spremi rezultat 
 
         public async Task<Product> Get(int id)
         {

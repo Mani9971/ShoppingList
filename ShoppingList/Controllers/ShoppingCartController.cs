@@ -33,7 +33,7 @@ namespace ShoppingList.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> IndexPostAsync(ShoppingCart shoppingCart)
         {
-            if (ModelState.IsValid)//validate data with annotations
+            if (ModelState.IsValid)
             {
                 var added = await _svc.Add(shoppingCart);
                 if (added)
@@ -53,7 +53,7 @@ namespace ShoppingList.Controllers
         //GET - Edit
         public async Task<IActionResult> EditAsync(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 _notyf.Error("List not found.");
                 return View();
@@ -93,17 +93,17 @@ namespace ShoppingList.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePostAsync(int? id)
         {
-                var deleted = await _svc.Delete((int)(id));
-                if (deleted)
-                {
-                    _notyf.Success("List deleted.");
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    _notyf.Warning("List not found.");
-                    return RedirectToAction("Index");
-                }
+            var deleted = await _svc.Delete((int)(id));
+            if (deleted)
+            {
+                _notyf.Success("List deleted.");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                _notyf.Warning("List not found.");
+                return RedirectToAction("Index");
+            }
         }
     }
 }

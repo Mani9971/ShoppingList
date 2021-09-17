@@ -20,11 +20,11 @@ namespace ShoppingList.Services
 
         public async Task<bool> Add(Product entity)
         {
-                using (_db)
-                {
-                    var a = await _db.Products.Add(entity);
-                    if (a > 0) return true;
-                }
+            using (_db)
+            {
+                var a = await _db.Products.Add(entity);
+                if (a > 0) return true;
+            }
             return false;
         }
 
@@ -57,11 +57,11 @@ namespace ShoppingList.Services
         public async Task<bool> Update(Product entity)
         {
 
-                using (_db)
-                {
-                    var a = await _db.Products.Update(entity);
-                    if (a > 0) return true;
-                };
+            using (_db)
+            {
+                var a = await _db.Products.Update(entity);
+                if (a > 0) return true;
+            };
             return false;
         }
     }
