@@ -38,6 +38,16 @@ namespace ShoppingList.Services
             };
         }
 
+        public async Task<bool> CheckUncheckItem(int listId, int productId)
+        {
+            using (_db)
+            {
+                var a = await _db.ShoppingCart.CheckUncheckItem(listId, productId);
+                if (a > 0) return true;
+            };
+            return false;
+        }
+
         public async Task<bool> Delete(int id)
         {
             using (_db)
@@ -70,6 +80,16 @@ namespace ShoppingList.Services
             {
                 return await _db.ShoppingCart.GetShoppingCartWithProducts(id);
             }
+        }
+
+        public async Task<bool> RemoveProductFromShoppingCart(int listId, int productId)
+        {
+            using (_db)
+            {
+                var a =  await _db.ShoppingCart.RemoveProductFromShoppingCart(listId, productId);
+                if (a > 0) return true;
+            };
+            return false;
         }
 
         public async Task<bool> Update(ShoppingCart entity)

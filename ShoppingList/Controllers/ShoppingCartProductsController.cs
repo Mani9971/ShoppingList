@@ -56,5 +56,38 @@ namespace ShoppingList.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> DeleteAsync(int productId)
+        {
+            if (productId != 0)
+            {
+                var removed = await _svc.RemoveProductFromShoppingCart((int)_session.GetInt32("_Id"), productId);
+                if (removed)
+                {
+                    _notyf.Success("Product removed.");
+                    return RedirectToAction("Index");
+                }
+            }
+            _notyf.Warning("Error");
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Checked(int productId)
+        {
+            if (productId != 0)
+            {
+                var checkedUnchecked =await _svc.CheckUncheckItem((int)_session.GetInt32("_Id"), productId);
+                    if (checkedUnchecked)
+                    {
+                    return RedirectToAction("Index");
+                }
+            }
+            _notyf.Success("Error.");
+            return RedirectToAction("Index"); ;
+        }
+
     }
 }

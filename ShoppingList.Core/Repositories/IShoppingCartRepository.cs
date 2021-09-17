@@ -11,5 +11,7 @@ namespace ShoppingList.Core.Repositories
     {
         public Task<ShoppingCart> GetShoppingCartWithProducts(int id);
         Task<ShoppingCart> AddProductToShoppingCart(Product product, int id);
+        Task<int> RemoveProductFromShoppingCart(int listId, int productId);
+        Task<int> CheckUncheckItem(int listId, int productId);
     }
 }

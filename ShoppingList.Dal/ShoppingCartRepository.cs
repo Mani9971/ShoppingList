@@ -4,6 +4,7 @@ using ShoppingList.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -90,6 +91,37 @@ namespace ShoppingList.Dal
             _context.SaveChanges();
 
             return foundShoppingCart;
+        }
+
+        public async Task<int> RemoveProductFromShoppingCart(int listId, int productID)
+        {
+            var shoppingCartTask = _context.ShoppingCart.Where(x => x.Id == listId).Include(x => x.Products).FirstOrDefaultAsync();
+            var foundShoppingCart = shoppingCartTask.Result;
+            var foundShoppingCartProduct = foundShoppingCart.Products.Where(x => x.Id == productID).FirstOrDefault();
+            if (foundShoppingCartProduct != null)
+            {
+                var removed = foundShoppingCart.Products.Remove(foundShoppingCartProduct);
+                if (removed == true)
+                {
+                    _context.ShoppingCart.Update(foundShoppingCart);
+                }
+            }
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> CheckUncheckItem(int listId, int productId)
+        {
+            var shoppingCartTask = _context.ShoppingCart.Where(x => x.Id == listId).Include(x => x.Products).FirstOrDefaultAsync();
+            var foundShoppingCart = shoppingCartTask.Result;
+            var foundShoppingCartProduct = foundShoppingCart.Products.Where(x => x.Id == productId).FirstOrDefault();
+            if (foundShoppingCartProduct != null)
+            {
+                foundShoppingCartProduct.IsChecked = !foundShoppingCartProduct.IsChecked;
+
+                _context.ShoppingCart.Update(foundShoppingCart);
+ 
+            }
+            return await _context.SaveChangesAsync();
         }
     }
 }

@@ -5,7 +5,7 @@
 <div class="container" p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-primary">@Model.ShoppingCart.Name"</h2>
+            <h2 class="text-primary">@Model.ShoppingCart.Name</h2>
         </div>
         <div class="col-6 text-right">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add product</button>
@@ -20,6 +20,9 @@
     <thead class="thead-dark">
         <tr>
             <th>
+                Check
+            </th>
+            <th>
                 Product name
             </th>
             <th>
@@ -31,22 +34,21 @@
     <tbody>
         @foreach (var product in @Model.ShoppingCart.Products)
         {
-<tr>
-    <td width="50%">@product.Name</td>
-    <td width="30%">@product.Price</td>
-    <td class="text-center">
-        <div class="w-75 btn-group" role="group">
-            @*<a asp-controller="Product" asp-route-Id="@product.Id" asp-action="Edit" class="btn btn-primary mx-2">
-                    Edit
-                </a>*@
-            @*@using (Html.BeginForm("DeletePost", "Product", new { Id = product.Id }, FormMethod.Post))
+        <tr style='background-color: @(product.IsChecked == false ? "white" : "#e9e9e9"); color :@(product.IsChecked == false ? "black" : "#AEB6BF");'>
+            <td width="10" style="padding: 5px" class="text-center">
+                @using (Html.BeginForm("Checked", "ShoppingCartProducts", new { productId = @product.Id }, FormMethod.Post))
                 {
-                    <button class="btn btn-danger">Delete</button>
-                }*@
-        </div>
-    </td>
-</tr>
-           }
+                <button class="myBtn" style="background-color: @(product.IsChecked == false ? "#fffff" : "#00b1ff");"></button>
+                }
+            </td>
+            <td width="50%">@product.Name</td>
+            <td width="30%">@product.Price</td>
+            <td class="text-right">
+                @using (Html.BeginForm("Delete", "ShoppingCartProducts", new { productId = @product.Id }, FormMethod.Post))
+                {
+        <button class="btn btn-danger">X</button>}
+            </td>
+        </tr>}
     </tbody>
 </table> }
 else
@@ -62,32 +64,32 @@ else
 @using (Html.BeginForm("IndexPost", "ShoppingCartProducts", FormMethod.Post))
 {
 @Html.EditorForModel()
-<div id="exampleModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add products</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Name:</label>
-                    @Html.TextBoxFor(m => m.Product.Name, new { @class = "form-control" })
-                    <span asp-validation-for="Product.Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label>Price:</label>
-                    @Html.TextBoxFor(m => m.Product.Price, new { @class = "form-control" })
-                    <span asp-validation-for="Product.Price" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>}
+                <div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add products</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    @Html.TextBoxFor(m => m.Product.Name, new { @class = "form-control" })
+                                    <span asp-validation-for="Product.Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price:</label>
+                                    @Html.TextBoxFor(m => m.Product.Price, new { @class = "form-control" })
+                                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>}
 <!---------------------Modal PopUp---------------------->

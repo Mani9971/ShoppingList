@@ -42,5 +42,26 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
+
+    <style>
+        .myBtn {
+            display: inline-block;
+            padding: 10px 10px;
+            background: #ffffff;
+            border-radius: 12px;
+            color: #fff;
+            border: 2px solid #00b1ff;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+
+            .myBtn:hover {
+                border: 2px solid #81d9ff;
+                background: #00b1ff;
+            }
+    </style>
 </body>
 </html>
